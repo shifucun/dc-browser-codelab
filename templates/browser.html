@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>DC Playground</title>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const dcid = "{{ dcid }}";
+      const req = new XMLHttpRequest();
+      const url = 'http://api.datacommons.org/node/property-labels?dcids=' + dcid;
+      req.open("GET", url);
+      req.send();
+      req.onreadystatechange = (e) => {
+        const data = JSON.parse(req.responseText);
+        payload = JSON.parse(data["payload"])
+        for (const t of payload[dcid]['inLabels']) {
+          const node = document.createElement("LI");                 // Create a <li> node
+          var textnode = document.createTextNode(t);         // Create a text node
+          node.appendChild(textnode);                              // Append the text to <li>
+          document.getElementById("in-labels").appendChild(node);     // Append <li> to <ul> with id="myList"
+        }
+      }
+    }, false);
+  </script>
+</head>
+<body>
+    <H1>
+      dcid: {{dcid}}
+    </H1>
+    <h2 id="in-labels"></h2>
+    <h2 id="out-labels"></h2>
+</body>
+</html>
